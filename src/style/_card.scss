@@ -94,8 +94,6 @@
       background: rgb(9,105,204);
       background: linear-gradient(105deg, rgba(9,105,204,0.06626400560224088) 0%, rgba(255,255,255,1) 100%);
       opacity: 0.8;
-      // box-shadow: inset 3px 0 5px rgba(199, 199, 199, 0.45);
-
       svg {
         transform: rotate(180deg);
         border: 1px solid $main;
@@ -198,4 +196,82 @@
       }
     }
   }
+}
+
+// Dark Theme
+body.dark {
+
+.card {
+  background-color: $dark_sub;
+  box-shadow: $shadow_dark;
+  .card-image {
+    background-color: $dark_bg;
+    svg {
+      transition: 0.4s;
+      transition-delay: 0.3s;
+      position: relative;
+      z-index: 2;
+    }
+
+    &:hover {
+      background-color: $dark_sub;
+      box-shadow: inset  $shadow_dark;
+
+      svg {
+        transform: scale(1.5)
+      }
+      svg polygon {
+        stroke: #ddd;
+      }
+    }
+  }
+
+  .details {
+    color: #ccc;
+  }
+
+  &.active {
+    .card-image {
+      background: transparent;
+      svg {
+        transform: rotate(180deg);
+        border: 1px solid $yellow;
+        polygon {
+          stroke: $yellow;
+        }
+      }
+
+      &:hover {
+        svg polygon {
+          stroke: $yellow;;
+        }
+      }
+    }
+
+    .playing_ui {
+      span {
+        background-color: $yellow;
+      }
+    }
+  }
+
+  .btn_card {
+    background-color: $dark_bg;
+    box-shadow: none !important;
+    svg path,
+    svg line,
+    svg polyline {
+      stroke: #ffab40;
+    }
+
+    &:hover {
+      background-color: $dark_sub;
+      svg {
+        transform: scale(1.2);
+      }
+    }
+  }
+}
+
+
 }

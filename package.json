@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "firebase": "^7.14.4",
     "jquery": "^3.5.0",
     "materialize-css": "^1.0.0-rc.2",
     "simplebar-vue": "^1.4.0",
     "vue": "^2.6.10",
+    "vue-firebase": "^1.0.8",
     "vue-i18n": "^8.15.7",
     "vue-plyr": "^6.0.4",
     "vue-router": "^3.1.3",

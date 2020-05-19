@@ -256,10 +256,6 @@
       animation-duration: 2s;
       animation-iteration-count: infinite;
       animation-delay: .2s;
-      -webkit-animation-name: pulse;
-      -webkit-animation-duration: 2s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-delay: .2s;
     }
     
     .r2{
@@ -267,10 +263,6 @@
       animation-duration: 2s;
       animation-iteration-count: infinite;
       animation-delay: .4s;
-      -webkit-animation-name: pulse;
-      -webkit-animation-duration: 2s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-delay: .4s;
     }
     
     .r3{
@@ -278,10 +270,6 @@
       animation-duration: 2s;
       animation-iteration-count: infinite;
       animation-delay: .6s;
-      -webkit-animation-name: pulse;
-      -webkit-animation-duration: 2s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-delay: .6s;
     }
     
     .r1 > .hex-brick{
@@ -289,10 +277,6 @@
       animation-duration: 2s;
       animation-iteration-count: infinite;
       animation-delay: .2s;
-      -webkit-animation-name: fade;
-      -webkit-animation-duration: 2s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-delay: .2s;
     }
     
     .r2 > .hex-brick{
@@ -300,10 +284,6 @@
       animation-duration: 2s;
       animation-iteration-count: infinite;
       animation-delay: .4s;
-      -webkit-animation-name: fade;
-      -webkit-animation-duration: 2s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-delay: .4s;
     }
     
     .r3 > .hex-brick{
@@ -311,10 +291,6 @@
       animation-duration: 2s;
       animation-iteration-count: infinite;
       animation-delay: .6s;
-      -webkit-animation-name: fade;
-      -webkit-animation-duration: 2s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-delay: .6s;
     }
     
     
@@ -379,4 +355,48 @@
         background: $main;
       }
     }
+}
+
+body.dark {
+  .preloader {
+    background-color: $dark_bg;
+
+    .hex-brick{
+      background: $dark_sub;
+    }
+
+    .r1 > .hex-brick{
+      animation-name: fade_dark;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: .2s;
+    }
+    
+    .r2 > .hex-brick{
+      animation-name: fade_dark;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: .4s;
+    }
+    
+    .r3 > .hex-brick{
+      animation-name: fade_dark;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: .6s;
+    }
+
+    @keyframes fade_dark{
+      0%{
+        background: $dark_sub;
+      }
+      
+      50%{
+        background: #90BBBF;
+      }
+      
+      100%{
+        background: $dark_sub;
+      }
+    }}
 }

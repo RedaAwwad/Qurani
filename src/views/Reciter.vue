@@ -92,32 +92,37 @@
         axios.get('https://mp3quran.net/api/_arabic.php')
         .then((res) => {
 
-          let currReciter = res.data.reciters.filter(rec => rec.id === this.currId);
-          const surasNumbers = currReciter[0].suras.split(',');
+            if(this.currId) { //Check about query id is exist
 
-          currReciter[0].suras_info = [];
+              let currReciter = res.data.reciters.filter(rec => rec.id === this.currId);
+              const surasNumbers = currReciter[0].suras.split(',');
 
-          this.surasData.forEach(ele => {
-            for(let i = 0; i < this.surasData.length; i++) {
-              if(ele.id == surasNumbers[i]) {
+              currReciter[0].suras_info = [];
 
-                let sNumber = ele.id;
+              this.surasData.forEach(ele => {
+                for(let i = 0; i < this.surasData.length; i++) {
+                  if(ele.id == surasNumbers[i]) {
 
-                if(ele.id < 10) sNumber = `00${ele.id}`
-                else if (ele.id >= 10 && ele.id < 100) sNumber = `0${ele.id}`
+                    let sNumber = ele.id;
 
-                let sura = {
-                  id: ele.id,
-                  name: ele.name,
-                  link: `${currReciter[0].Server}/${sNumber}.mp3`
-                }
-                currReciter[0].suras_info.push(sura);
-              }}
-          });
+                    if(ele.id < 10) sNumber = `00${ele.id}`
+                    else if (ele.id >= 10 && ele.id < 100) sNumber = `0${ele.id}`
 
-          this.reciter = currReciter[0];
-          
-          this.loading = false;
+                    let sura = {
+                      id: ele.id,
+                      name: ele.name,
+                      link: `${currReciter[0].Server}/${sNumber}.mp3`
+                    }
+                    currReciter[0].suras_info.push(sura);
+                  }}
+              });
+
+              this.reciter = currReciter[0];
+              
+              this.loading = false;
+              
+            } 
+            else  this.$router.replace('/');  // Redirect to home page if current id  is undefined
 
         }).catch((err) => console.log(err.message));
         
@@ -191,5 +196,22 @@
     display: flex;
     margin-right: 1rem;
     margin-left: 1rem;
+  }
+
+  body.dark {
+    .reciter_details {
+      & > div {
+        box-shadow: $shadow_dark;
+        background-color: $dark_sub;
+      }
+    }
+  }
+
+    body.rtl {
+    .reciter_details {
+      &>div {
+        direction: ltr;
+      }
+    }
   }
 </style>
