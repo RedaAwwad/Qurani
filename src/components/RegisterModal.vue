@@ -202,7 +202,7 @@ import { firebase,  setDataCollection} from '../firebase/firebase';
 
               this.fetchingData = false;
 
-              this.$router.replace('/profile');
+              this.$router.push('/profile');
 
                 M.toast({html:   'تم تسجيل حسابك بنجاح، أهلا بك يا ' + this.user.fullName });
 

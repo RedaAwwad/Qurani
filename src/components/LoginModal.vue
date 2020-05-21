@@ -135,7 +135,7 @@ export default {
             // Get User Data
             this.$store.dispatch("GetUserData");
 
-            this.$router.replace('/profile');
+            this.$router.push('/profile');
 
           })
           .catch((error) => {
