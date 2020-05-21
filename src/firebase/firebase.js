@@ -68,5 +68,5 @@ async function updateDataCollection(collectionName, doc, data) {
 }
 
 
-export { firebase, setDataCollection, getDataCollection, updateDataCollection}; 
+export { firebase,  db, setDataCollection, getDataCollection, updateDataCollection}; 
 

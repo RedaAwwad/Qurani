@@ -43,6 +43,22 @@ body {
     text-align: center;
     background-color: #fff;
   }
+
+  .tabs .tab a:hover, .tabs .tab a.active {
+    background-color: rgba(246,178,181,0.2);
+  }
+
+  @media screen  and (min-width: 501px) {
+		.hidden_big_screen {
+			display: none !important;
+		}
+	}
+
+  @media screen  and (max-width: 500px) {
+		.hidden_small_screen {
+			display: none !important;
+		}
+	}
   
   .page_wraper {
     padding: 2rem;
@@ -51,10 +67,7 @@ body {
     &.collapsed {
       margin-right: 20%;
     }
-    ul {
-      height: 500px;
-    }
-  
+
     @media screen and (max-width: 991px) {
       &.collapsed {
         margin-right: 30%;
@@ -105,10 +118,6 @@ body {
         margin-top: 1.5rem;
       }
     }
-  }
-
-  .material-tooltip {
-    background-color: #000;
   }
 
   input:not([type]):focus:not([readonly]),
@@ -349,6 +358,10 @@ body {
   .toast {
     background-color: $dark_sub !important;
   }
+  
+  .swal2-confirm {
+    background-color: $main !important; 
+  }
 }
 
 // Dark Style
@@ -477,8 +490,18 @@ body.dark {
     background-color: $dark_sub;
   }
 
-  .toast {
-    background-color: $yellow !important;
+  .toast,
+  .swal2-popup.swal2-modal {
+    background-color: #bb7f28 !important;
+  }
+  .swal2-title {color: #fff !important;}
+  .swal2-confirm {
+    background-color: #fff !important;; 
+    color: #333 !important;
+  }
+  .swal2-cancel {
+    background-color: #333 !important;; 
+    color: #fff !important;;
   }
 }
 

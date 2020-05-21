@@ -2,15 +2,16 @@ import Vue from "vue";
 import Vuex from "vuex";
 import router from "../router";
 
-import { firebase, getDataCollection } from '../firebase/firebase';
+import { firebase, db as firestore, getDataCollection } from '../firebase/firebase';
 
 Vue.use(Vuex);
 Vue.use(router);
 
 const body = document.querySelector('body');
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
+    pageLoaded: false,
     logged: false,
     user: {},
   },
@@ -21,26 +22,42 @@ export default new Vuex.Store({
     updateUserStatus(state, status) {
       state.logged = status;
     },
+    updatePageLoaded(state, pageStatus) {
+      state.pageLoaded = pageStatus;
+    }
   },
   actions: {
-    GetUserData(context) {
+    async GetUserData(context) {
 
-      firebase.auth().onAuthStateChanged((user) =>  {
+      await firebase.auth().onAuthStateChanged((user) => {
+        
         if (user) {
-          const userId = user.uid;
-
-          getDataCollection("profiles", userId).then(data => {
+          getDataCollection("profiles", user.uid).then(data => {
 
             context.commit("updateUserData", data);
               
-              window.localStorage.setItem('theme_for_qurani', data.settings.theme);
-
+            window.localStorage.theme_for_qurani = data.settings.theme;
+            
               context.commit("updateUserStatus", true);
 
-              context.dispatch("triggerThemeData");
+            context.dispatch("triggerThemeData");
+
+            context.dispatch("pageLoadedStatus", true);
 
           }).catch(err => console.error(err));
-        }});
+        } else {
+          // Not Logged in
+          context.commit("updateUserData", {});
+
+          context.commit("updateUserStatus", false);
+
+          context.dispatch("pageLoadedStatus", true)
+        };
+      });
+
+    },
+    pageLoadedStatus(context, data) {
+        context.commit('updatePageLoaded', data);
     },
     triggerThemeData() {
       const storedTheme = window.localStorage.getItem('theme_for_qurani');
@@ -53,3 +70,5 @@ export default new Vuex.Store({
     },
   },
 });
+
+export default store;

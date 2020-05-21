@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { fb,  setDataCollection} from '../firebase/firebase';
+import { firebase,  setDataCollection} from '../firebase/firebase';
 
   export default {
     name: 'RegisterModal',
@@ -106,7 +106,7 @@ import { fb,  setDataCollection} from '../firebase/firebase';
           email: null,
           password: null,
           confirmPass: null,
-          imgUrl: null
+          imgUrl: 'https://firebasestorage.googleapis.com/v0/b/qurani-3dc88.appspot.com/o/default-profile.png?alt=media&token=9da04e47-ba00-40c1-9f06-9d1ce81d49f4'
         },
         validationsError: {
           status: false,
@@ -180,7 +180,7 @@ import { fb,  setDataCollection} from '../firebase/firebase';
 
           this.fetchingData = true;
 
-          fb.auth().createUserWithEmailAndPassword(this.user.email, this.user.password)
+          firebase.auth().createUserWithEmailAndPassword(this.user.email, this.user.password)
           .then((user) => {
 
             const userId  = user.user.uid ;
@@ -189,6 +189,7 @@ import { fb,  setDataCollection} from '../firebase/firebase';
               name: this.user.fullName,
               uid: userId,
               email: user.user.email,
+              isAdmin: false,
               createdAt: new Date(),
               lastEdit: null,
               imgUrl: this.user.imgUrl,
@@ -204,6 +205,14 @@ import { fb,  setDataCollection} from '../firebase/firebase';
               this.$router.replace('/profile');
 
                 M.toast({html:   'تم تسجيل حسابك بنجاح، أهلا بك يا ' + this.user.fullName });
+
+                this.user = {
+                  fullName: null,
+                  email: null,
+                  password: null,
+                  confirmPass: null,
+                  imgUrl: null
+                }
             }).catch(err => {
               console.log(err);
               this.fetchingData = false;

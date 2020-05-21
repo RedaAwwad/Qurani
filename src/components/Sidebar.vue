@@ -89,9 +89,8 @@
           </span>
         </router-link>
         <div class="profile_controls">
-          <a
-            href="#login"
-            class="btn_login modal-trigger"  v-if="!logged">
+          <a href="#login"
+            class="btn_login modal-trigger login"  v-if="!logged">
             <span>تسجيل الدخول</span>
             <span class="btn_icon">
               <svg
@@ -140,19 +139,19 @@
                   <div class="card">
                     <div class="card-image">
                       <img :src="user.imgUrl ? user.imgUrl : defaultImage" />
-                      <a class="btn-floating halfway-fab waves-effect waves-light dropdown-trigger" data-target='dropdownProfile'
-                        ><i class="material-icons blue">build</i></a
-                      >
+                      <button @click="logout" type="button" title="تسجيل الخروج"
+                        class="btn-floating halfway-fab waves-effect waves-light custom">
+                        <i class="material-icons">settings_power</i>
+                      </button>
+                      <router-link to="/profile" title="الحساب"
+                        class="btn-floating halfway-fab waves-effect waves-light">
+                        <i class="material-icons">perm_identity</i>
+                      </router-link>
                     </div>
                     <div class="card-content">
                           <span class="user_name">{{ user.name }}</span>
                     </div>
                   </div>
-                  <ul id='dropdownProfile' class='dropdown-content'>
-                    <li @click="openProfile()"><a href="javascript: ;" class="blue-text"><i class="material-icons -text">persone</i></a></li>
-                    <li class="divider" tabindex="-1"></li>
-                    <li @click="logout()"><a href="javascript: ;" class="blue-text"><i class="material-icons -text">power_settings_new</i></a></li>
-                  </ul>
                 </div>
               </div>
           </transition>
@@ -178,9 +177,6 @@
           </svg>
           by <a href="#" target="_blank">Reda Awaad</a> &copy; 2020
         </small>
-        <small>
-          نسألكم الدعاء لأبى
-        </small>
       </div>
     </simplebar>
   <!-- </div> -->
@@ -191,6 +187,7 @@ import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
 import defaultImg from '../assets/default-profile.png';
 import { mapState } from "vuex";
+import { firebase } from "../firebase/firebase";
 
 export default {
   name: "Sidebar",
@@ -206,7 +203,6 @@ export default {
   },
   methods: {
     changeLanguage() {
-      this.$store.state.loading = true;
 
       const currLang = this.$i18n.locale;
 
@@ -219,13 +215,28 @@ export default {
         this.$store.state.loading = false;
       }, 2500);
     },
-    openProfile() {
-      if(this.$store.state.logged) {
-        this.$router.replace('/profile');
-      }
-    },
     logout() {
 
+      Swal.fire({
+        title: 'هل تريد تسجيل الخروج؟',
+        confirmButtonText: 'نعم',
+        cancelButtonText: 'لا',
+        showCancelButton: true
+      }).then (res=> {
+        
+        if(res.value) {
+
+          firebase.auth().signOut().then(() => {
+
+          this.$store.dispatch('GetUserData');
+
+          M.toast({html: 'تم تسجيل الخروج'});
+
+          this.$router.go({path: '/'});
+
+        }).catch((error) => console.log(error));
+
+        }});
     }
   },
 };

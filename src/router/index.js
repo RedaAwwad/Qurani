@@ -5,8 +5,9 @@ import Reciter from "../views/Reciter.vue";
 import Live from "../views/Live.vue";
 import Favorite from "../views/Favorite.vue";
 import Playlist from "../views/Playlist.vue";
+import Admin from "../views/Admin.vue";
 import Profile from "../views/Profile.vue";
-import Store from "../store";
+import { firebase,  getDataCollection} from "../firebase/firebase";
 
 Vue.use(VueRouter);
 
@@ -16,26 +17,59 @@ const routes = [
   { path: "/live", name: "live", component: Live },
   { path: "/favorite", name: "favorite", component: Favorite },
   { path: "/playlist", name: "playlist", component: Playlist },
-  { path: "/profile", name: "profile", component: Profile,
-  async beforeEnter(to, from, next) {
-    try {
-      await Store.dispatch("GetUserData");
-      if (Store.state.logged) {
-        next()
-      }
-    } catch (e) {
-      next({
-      path: '/'
-      })
+  {
+    path: "/admin",
+    name: "admin",
+    component: Admin,
+    meta: { requiresAuth: true },
+    beforeEnter(to, from, next) {
+      firebase.auth().onAuthStateChanged((user) =>  {
+        if (user) {
+          //user logged in 
+          getDataCollection("profiles", user.uid).then(data => {
+
+            if (data.isAdmin) {
+              next();
+            } else {
+              next('/profile');
+            }
+
+          }).catch(err => console.error(err));
+
+        } else {
+          // user not logged in
+          next('/');
+        };
+      });
     }
-  }  },
-  { path: "*", component: Home },
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: Profile,
+    meta: { requiresAuth: true }
+  },
+  { path: "*", component: Home, redirect: '/' }
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const isAuthorized = firebase.auth().currentUser;
+
+  if (requiresAuth && !isAuthorized) {
+    next('/')
+  } else {
+    next()
+  }
+});
+
+// console.log(JSON.parse(window.localStorage.quraniUser));
+
 
 export default router;

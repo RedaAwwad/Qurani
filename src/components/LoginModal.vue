@@ -121,7 +121,7 @@ export default {
       if (!this.emailError.status && !this.passError.status) {
 
         this.fetchingData = true;
-        
+
         firebase.auth()
           .signInWithEmailAndPassword(this.email, this.password)
           .then((res) => {
@@ -131,12 +131,12 @@ export default {
 
             this.fetchingData = false;
 
+            M.toast({html: `أهلا بك :)`});
             // Get User Data
             this.$store.dispatch("GetUserData");
 
             this.$router.replace('/profile');
 
-            M.toast({html:   'تم تسجيل الدخول، أهلآ بك  ' });
           })
           .catch((error) => {
             let errMsg = error.message;

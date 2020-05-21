@@ -1,7 +1,7 @@
 <template>
   <simplebar class="app" data-simplebar-auto-hide="true">
-    <preloader v-if="!page_loaded" />
-    <navbar v-on:toggleMenu="toggleMenu" v-on:reLoadThePage="reLoadThePage" />
+    <preloader v-if="!pageLoaded" />
+    <navbar v-on:toggleMenu="toggleMenu"/>
     <section class="page_wraper" :class="{ collapsed: menu }">
       <div class="row">
         <div class="col l5">
@@ -77,7 +77,6 @@ export default {
   },
   data() {
     return {
-      page_loaded: false,
       menu: true,
       streamLink: "https://server13.mp3quran.net/basit_mjwd/001.mp3",
       streamTitle: "الفاتحة",
@@ -85,7 +84,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["logged"]),
+    ...mapState(["logged", "pageLoaded"]),
     playerStream() {
       return this.streamLink;
     },
@@ -94,9 +93,6 @@ export default {
     },
   },
   methods: {
-    reLoadThePage(newStatus) {
-      this.page_loaded = newStatus;
-    },
     toggleMenu() {
       this.menu = !this.menu;
       document.querySelector("body").classList.toggle("openMenu");
@@ -113,7 +109,8 @@ export default {
   mounted() {
     Materialize.AutoInit();
 
-    window.addEventListener("load", () => (this.page_loaded = true));
+  this.$store.dispatch('GetUserData');
+
   },
 };
 </script>

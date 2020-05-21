@@ -3,6 +3,12 @@
     <div class="nav-wrapper">
       <router-link to="/" class="brand-logo blue-text">{{ $t('logo') }}</router-link>
       <ul class="right">
+        <li v-if="user.isAdmin" class="hidden_small_screen">
+          <router-link  to="/admin" class="btn_admin">Admin</router-link>
+        </li>
+        <li class="navbar_logout hidden_small_screen" v-if="logged">
+          <button @click="logout" type="button" class="btn_style"><span> الخروج </span> <span class="out">تسجيل </span> </button>
+        </li>
         <li><a href="javascript:;" @click="toggleMenu" class="blue-text"><i class="material-icons">menu</i></a></li>
         <li><a href="javascript:;" class="blue-text dropdown-trigger" data-target='dropdown1'><i class="material-icons">more_vert</i></a></li>
         <!-- Dropdown Structure -->
@@ -12,6 +18,12 @@
           <li class="divider" tabindex="-1"></li> -->
           <li @click="changeTheme('light')"><a href="javascript: ;" class="blue-text">ساطع</a></li>
           <li @click="changeTheme('dark')"><a href="javascript: ;" class="black-text">غامق</a></li>
+          <li v-if="user.isAdmin" class="hidden_big_screen">
+          <router-link  to="/admin" class="btn_admin">Admin</router-link>
+        </li>
+        <li class="navbar_logout hidden_big_screen" v-if="logged">
+          <button @click="logout" type="button" class="btn_style"><span> الخروج </span> <span class="out">تسجيل </span> </button>
+        </li>
         </ul>
       </ul>
     </div>
@@ -20,8 +32,7 @@
 
 <script>
   import { mapState } from 'vuex';
-
-  import { updateDataCollection } from '../firebase/firebase';
+  import { firebase, updateDataCollection } from '../firebase/firebase';
 
   const body = document.querySelector('body');
   export default {
@@ -39,9 +50,11 @@
         this.$emit('toggleMenu')
       },
       changeTheme(theme) {
-          if(theme === 'dark' && window.localStorage.getItem('theme_for_qurani') !== 'dark') {
-            this.$emit('reLoadThePage', false);
-            window.localStorage.setItem('theme_for_qurani', theme);
+          if(theme === 'dark' && window.localStorage.theme_for_qurani !== 'dark') {
+
+            this.$store.dispatch('pageLoadedStatus', false);
+
+            window.localStorage.theme_for_qurani = theme;
 
             this.$store.dispatch('triggerThemeData');
 
@@ -56,11 +69,13 @@
                 }).catch(err => console.log(err));
             }
 
-            setTimeout(() => this.$emit('reLoadThePage', true), 2000);
+            setTimeout(() => this.$store.dispatch('pageLoadedStatus', true), 2000);
 
-          } else if(theme === 'light' && window.localStorage.getItem('theme_for_qurani') !== 'light') {
-              this.$emit('reLoadThePage', false);
-              window.localStorage.setItem('theme_for_qurani', theme);
+          } else if(theme === 'light' && window.localStorage.theme_for_qurani !== 'light') {
+
+              this.$store.dispatch('pageLoadedStatus', false);
+
+              window.localStorage.theme_for_qurani = theme;
 
             this.$store.dispatch('triggerThemeData');
 
@@ -74,46 +89,39 @@
                 
                   }).catch(err => console.log(err));
             }
-            setTimeout(() => this.$emit('reLoadThePage', true), 2000);
+            setTimeout(() => this.$store.dispatch('pageLoadedStatus', true), 2000);
           }
+      },
+      logout() {
+
+        Swal.fire({
+        title: 'هل تريد تسجيل الخروج؟',
+        confirmButtonText: 'نعم',
+        cancelButtonText: 'لا',
+        showCancelButton: true,
+      }).then (res=> {
+        
+        if(res.value) {
+
+          firebase.auth().signOut().then(() => {
+
+          this.$store.dispatch('GetUserData');
+
+          M.toast({html: 'تم تسجيل الخروج'});
+
+          this.$router.go({path: '/'});
+
+        }).catch((error) => console.log(error));
+
+        }});
       }
     },
     mounted() {
       this.$store.dispatch('triggerThemeData');
-
-      
     }
   }
 </script>
 
 <style lang="scss" scoped>
-
-@import '../style/_vars.scss';
-
-  .navbar_container {
-    padding: 0 20px;
-    box-shadow: none;
-    border-bottom: 1px solid  #f2f2f2;
-    box-shadow: 0px 3.5px 10px rgba(199, 199, 199, 0.45);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    .brand-logo {left: auto; transform: none;}
-  }
-
-  body.dark {
-      .navbar_container {
-        background-color: $dark_sub !important;
-        border-bottom: 1px solid  #292929;
-        box-shadow: $shadow_dark;
-      }
-  }
-
-  // Rtl Styles
-body.rtl {
-  .navbar_container {
-    direction: ltr !important;
-    text-align: left;
-  }
-}
+  @import '../style/_navbar.scss';
 </style>
