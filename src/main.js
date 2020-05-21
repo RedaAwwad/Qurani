@@ -17,7 +17,7 @@ M.AutoInit();
 Vue.use(VuePlyr, {
   plyr: {
     fullscreen: { enabled: false },
-    // autoplay: true
+    autoplay: true
   },
   emit: ['ended']
 });

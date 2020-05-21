@@ -21,6 +21,9 @@
       <loading v-if="loading" />
 
       <div v-if="!loading" class="data_container">
+        <div class="center-align col" v-if="searchedData.length <= 0">
+          لا توجد نتائج
+        </div>
         <div v-for="sura in searchedData" :key="sura.id" class="col m6 card_container">
           <div class="card horizontal" :class="sura.link == trackUi ? 'active' : ''">
             <button type="button" class="card-image" :disabled="sura.link == trackUi ? true : false" 
