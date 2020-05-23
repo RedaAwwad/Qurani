@@ -357,6 +357,9 @@ body {
     position: absolute;
   }
 
+
+  .plyr__controls__item.plyr__menu {display: none !important;}
+
   .plyr__controls > button.plyr__control {
     bottom: 15%;
     left: 2rem;
@@ -364,8 +367,7 @@ body {
 
   .plyr__controls > .plyr__controls__item.plyr__volume {
     bottom: 15%;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 1rem;
   }
 
   .plyr__controls > .plyr__controls__item.plyr__menu {
