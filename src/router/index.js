@@ -72,9 +72,10 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+
+  if (window.innerWidth < 767) {
+    document.querySelector("body").classList.remove("openMenu");
+  }
 });
-
-// console.log(JSON.parse(window.localStorage.quraniUser));
-
 
 export default router;

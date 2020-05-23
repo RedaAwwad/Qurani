@@ -57,9 +57,6 @@
                 </div>
 				<div class="tab_body">
 					<div class="card" v-for="user in users" :key="user.uid">
-						<span @click="deleteUser(user)" class="delete_icon">
-							<i class="material-icons">delete</i>
-						</span>
 						<div class="card-image">
 							<img :src="user.imgUrl">
 							<div class="user_data">
@@ -133,44 +130,13 @@
 				}
 			}
 		},
-		// firestore () {
-		// 	return {
-		// 		users: firestore.collection('profiles')
-		// 	}
-		// },
 		methods: {
 			toggleTabs(tab) {
 				this.currentTab = tab;
 			},
-			deleteUser(user) {
-				Swal.fire({
-					title: `هل تريد حذف ${user.name}؟`,
-					confirmButtonText: 'نعم',
-					cancelButtonText: 'لا',
-					showCancelButton: true
-				}).then (res=> {
-					if(res.value) {
-						if(user.isAdmin) {
-							M.toast({html:   'غير مسموح بحذف أعضاء الإدارة بشكل مباشر' })
-						} else {
-							if(this.$store.state.user.isAdmin) {
-								this.$firestore.users.doc(user.id).delete()
-								.then(_=>   M.toast({html:   'تم الحذف' }))
-								.catch(err => console.log(err));
-							} else {
-								M.toast({html:   'غير مسموح لك بحذف الأعضاء الآخرين' , classes: 'red'})
-							}
-						}
-					}
-				});
-			}
 		},
 		mounted() {
 			this.$binding("users", firestore.collection("profiles"))
-			.then((data) => {
-				// this.countUsers(data);
-			})
-			// this.countUsers(users);
 		}
     }
 </script>

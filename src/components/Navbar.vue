@@ -42,7 +42,8 @@
     },
     methods: {
       toggleMenu() {
-        this.$emit('toggleMenu')
+        this.$emit('toggleMenu');
+        // document.querySelector('body'.classList.toggle('openMenu'))
       },
       changeTheme(theme) {
           if(theme === 'dark' && window.localStorage.theme_for_qurani !== 'dark') {
