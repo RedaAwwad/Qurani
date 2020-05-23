@@ -57,11 +57,11 @@
       box-shadow: 0 -3px 20px rgba(199, 199, 199, 0.45);
       .fullScreen {
         position: absolute;
-        top: 10%;
-        right: 5%;
+        bottom: -70%;
+        right: 2rem;
         z-index: 9;
         cursor: pointer;
-        svg path {stroke: #fff;}
+        svg path {stroke: $main;}
       }
       img {
         width: 100%;

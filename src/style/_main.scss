@@ -367,7 +367,8 @@ body {
 
   .plyr__controls > .plyr__controls__item.plyr__volume {
     bottom: 15%;
-    right: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .plyr__controls > .plyr__controls__item.plyr__menu {
