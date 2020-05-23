@@ -87,10 +87,7 @@
       },
       searchedData() {
         if(this.favPlaylist) {
-
           let favsIds = this.favPlaylist.map(fav => fav.id);
-
-          console.log(favsIds);
           
           this.surasData.forEach(sura => {
                 if(favsIds.includes(this.reciter.id + '_' + sura.id)) {
