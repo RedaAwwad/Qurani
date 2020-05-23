@@ -16,22 +16,21 @@ M.AutoInit();
 
 Vue.use(VuePlyr, {
   plyr: {
-    fullscreen: { enabled: false },
-    autoplay: true
+    fullscreen: { enabled: false }
   },
   emit: ['ended']
 });
 
-Vue.use(VueFirestore, {
-  key: 'id',
-  enumerable: true
-});
+Vue.use(VueFirestore);
 
 Vue.config.productionTip = false;
 
 let app;
 
 firebase.auth().onAuthStateChanged(user => {
+  if (user) window.userId = user.uid;
+  else window.userId = null;
+  
   if (!app) {
     app = new Vue({
       router,

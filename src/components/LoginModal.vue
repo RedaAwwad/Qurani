@@ -86,7 +86,7 @@ export default {
       if (!this.email) {
         this.emailError = {
           status: true,
-          msg: "هذا الحقل مطلوب",
+          msg: "أدخل الأيميل",
         };
       } else {
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
@@ -131,14 +131,14 @@ export default {
 
             this.fetchingData = false;
 
-            M.toast({html: `أهلا بك :)`});
             // Get User Data
-            this.$store.dispatch("GetUserData");
+            this.$store.dispatch("getUserData");
 
             this.$router.push('/profile');
 
-          })
-          .catch((error) => {
+            M.toast({html: `أهلا بك :)`});
+
+          }).catch((error) => {
             let errMsg = error.message;
 
             if (errMsg.match("no user record")) {

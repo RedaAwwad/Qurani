@@ -37,11 +37,6 @@
   const body = document.querySelector('body');
   export default {
     name: 'Navbar',
-    data() {
-      return {
-        // data here
-      }
-    },
     computed: {
       ...mapState(['logged', 'user'])
     },
@@ -67,9 +62,7 @@
                 M.toast({html:   res });
 
                 }).catch(err => console.log(err));
-            }
-
-            setTimeout(() => this.$store.dispatch('pageLoadedStatus', true), 2000);
+            } else {setTimeout(() =>  this.$store.dispatch("pageLoadedStatus", true), 1500);}
 
           } else if(theme === 'light' && window.localStorage.theme_for_qurani !== 'light') {
 
@@ -88,8 +81,7 @@
                 M.toast({html:   res });
                 
                   }).catch(err => console.log(err));
-            }
-            setTimeout(() => this.$store.dispatch('pageLoadedStatus', true), 2000);
+            } else {setTimeout(() =>  this.$store.dispatch("pageLoadedStatus", true), 1500);}
           }
       },
       logout() {
@@ -105,11 +97,11 @@
 
           firebase.auth().signOut().then(() => {
 
-          this.$store.dispatch('GetUserData');
+          this.$store.dispatch('getUserData');
+
+          this.$router.go({ name: "home"});
 
           M.toast({html: 'تم تسجيل الخروج'});
-
-          this.$router.go({path: '/'});
 
         }).catch((error) => console.log(error));
 

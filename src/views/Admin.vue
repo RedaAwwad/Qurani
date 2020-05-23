@@ -69,10 +69,10 @@
 						</div>
 						<div class="card-action">
 						<a :class="user.isAdmin ? 'admin' : 'user'">{{ user.isAdmin ?  'Admin'  : 'User'}}</a>
-						<a>{{ user.createdAt.toDate().toDateString() }}</a>
 						<a>{{ user.settings.lang }}</a>
 						<a>{{ user.settings.theme }}</a>
-						<a>{{ user.lastEdit ? 'Edited: ' + user.lastEdit.toDate().toDateString()  : 'No Edit'}}</a>
+						<a>{{ user.lastEdit ? 'Edited: ' + user.lastEdit.toDate()  : 'no edit'}}</a>
+						<a style="text-align: left;">{{ user.createdAt.toDate() }}</a>
 						<!-- <div class="user_id">{{ user.uid }}</div> -->
 						</div>
 					</div>
@@ -139,7 +139,6 @@
 		// 	}
 		// },
 		methods: {
-		
 			toggleTabs(tab) {
 				this.currentTab = tab;
 			},

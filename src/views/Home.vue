@@ -28,7 +28,8 @@
               </div>
             </div>
             <div class="card-action">
-              <span class="btn_card" @click="addToFavorite(reciter.id)">
+              <span class="btn_card" @click="addToFavorite(reciter)" 
+               :class="reciter.added ? 'added' : ''">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
               </span>
             </div>
@@ -44,6 +45,7 @@
   import Search from '@/components/Search';
   import axios from 'axios';
   import {mapState} from 'vuex';
+  import { db as firestore, db } from '../firebase/firebase';
 
   export default {
     name: "home",
@@ -53,13 +55,28 @@
       return {
         loading: true,
         reciters: [],
-        searched: ''
+        searched: '',
       }
     },
     computed: {
       ...mapState(['logged', 'user']),
       searchedData() {
+        if(this.favouriteReciters) {
+
+          let favsIds = this.favouriteReciters.map(fav => fav.id);
+
+          this.reciters.forEach(rec => {
+                if(favsIds.includes(rec.id)) {
+                  rec.added = true;
+                } else {
+                  rec.added = false;
+                }
+        });
+        }
         return this.reciters.filter((rec) => rec.name.toLowerCase().match(this.searched));
+      },
+      favouriteReciters() {
+        return this.user.favouriteReciters;
       }
     },
     methods: {
@@ -85,9 +102,28 @@
       },
       addToFavorite(reciter) {
           if(this.logged) {
+                let same = false;
+                if(!this.favouriteReciters) {
+                    db.collection('profiles').doc(this.user.uid).update({
+                          favouriteReciters: [reciter]
+                      }).then(_ =>  M.toast({html: 'تمت الإضافة'}))
 
-
-
+                      return false;
+                    }
+                
+                  this.favouriteReciters.forEach(rec => {
+                    if(rec.id === reciter.id) {
+                      same = true;
+                    }
+                  })
+            
+              if(!same) {
+                db.collection('profiles').doc(this.user.uid).update({
+                    favouriteReciters: [...this.favouriteReciters, reciter]
+                }).then(_ =>  M.toast({html: 'تمت الإضافة'}))
+              } else {
+                M.toast({html: 'موجود بالفعل'});
+              }
 
             // able to add
           } else {

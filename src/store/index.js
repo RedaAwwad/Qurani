@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import router from "../router";
 
-import { firebase, db as firestore, getDataCollection } from '../firebase/firebase';
+import { firebase, db } from '../firebase/firebase';
 
 Vue.use(Vuex);
 Vue.use(router);
@@ -13,59 +13,63 @@ const store = new Vuex.Store({
   state: {
     pageLoaded: false,
     logged: false,
-    user: {},
+    user:  {}
   },
   mutations: {
-    updateUserData(state, data) {
+    UPDATE_USER_DATA(state, data) {
       state.user = data;
     },
-    updateUserStatus(state, status) {
+    UPDATE_USER_STATUS(state, status) {
       state.logged = status;
     },
-    updatePageLoaded(state, pageStatus) {
-      state.pageLoaded = pageStatus;
+    UPDATE_PAGE_LOADED(state, status) {
+      state.pageLoaded = status;
     }
   },
   actions: {
-    async GetUserData(context) {
+    getUserData(context) {
 
-      await firebase.auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged((user) => {
         
         if (user) {
-          getDataCollection("profiles", user.uid).then(data => {
-
-            context.commit("updateUserData", data);
+          //User Logged in
+          db.collection('profiles').doc(user.uid).onSnapshot(docSnapshot => {
               
-            window.localStorage.theme_for_qurani = data.settings.theme;
+                let data = docSnapshot.data();
+
+                context.commit("UPDATE_USER_DATA", data);
             
-              context.commit("updateUserStatus", true);
+            setTimeout(() =>  context.dispatch("pageLoadedStatus", true), 1500);
+                
+                window.localStorage.theme_for_qurani = data.settings.theme;
+                
+                context.commit("UPDATE_USER_STATUS", true);
+                
+                context.dispatch("triggerThemeData");
+            
+            }, err => console.log(`Encountered error: ${err}`));
 
-            context.dispatch("triggerThemeData");
-
-            context.dispatch("pageLoadedStatus", true);
-
-          }).catch(err => console.error(err));
         } else {
-          // Not Logged in
-          context.commit("updateUserData", {});
+          // User Not Logged in
+          // context.dispatch("pageLoadedStatus", true);
+          setTimeout(() =>  context.dispatch("pageLoadedStatus", true), 1500);
 
-          context.commit("updateUserStatus", false);
-
-          context.dispatch("pageLoadedStatus", true)
+          context.commit("UPDATE_USER_DATA", {});
+          
+          context.commit("UPDATE_USER_STATUS", false);
+          
         };
       });
-
     },
-    pageLoadedStatus(context, data) {
-        context.commit('updatePageLoaded', data);
-    },
+    pageLoadedStatus(context, status) {
+      context.commit('UPDATE_PAGE_LOADED', status);
+  },
     triggerThemeData() {
-      const storedTheme = window.localStorage.getItem('theme_for_qurani');
-        if(storedTheme) {
-          if(storedTheme === 'dark') body.classList.add('dark');
+        if(window.localStorage.theme_for_qurani) {
+          if(window.localStorage.theme_for_qurani === 'dark') body.classList.add('dark');
           else body.classList.remove('dark');
         } else {
-          window.localStorage.setItem('theme_for_qurani', 'light');
+          window.localStorage.setItem('theme_for_qurani',  'light');
         }
     },
   },

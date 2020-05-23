@@ -40,14 +40,20 @@ async function setDataCollection(collectionName, userId, data) {
 async function getDataCollection(collectionName, doc) {
   let data = {};
   
-  await db.collection(collectionName).doc(doc).get()
-  .then(doc => {
+  await db.collection(collectionName).doc(doc).onSnapshot(docSnapshot => {
+    console.log(`Received doc snapshot:`);
+    // console.log(docSnapshot.data()['name'])
+    data = docSnapshot.data();
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+  });
+//   .then(doc => {
 
-    if (doc.exists) data = doc.data();
+//     if (doc.exists) data = doc.data();
       
-    else data = "No such document!";
+//     else data = "No such document!";
 
-}).catch(error => console.log("Error getting document:", error));
+// }).catch(error => console.log("Error getting document:", error));
 
   return data;
 

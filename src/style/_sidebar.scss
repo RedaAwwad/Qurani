@@ -84,6 +84,8 @@
     img {
       margin: auto;
       margin-top: -10px;
+      max-height: 140px;
+      object-fit: contain;
     }
   }
 }

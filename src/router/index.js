@@ -7,7 +7,8 @@ import Favorite from "../views/Favorite.vue";
 import Playlist from "../views/Playlist.vue";
 import Admin from "../views/Admin.vue";
 import Profile from "../views/Profile.vue";
-import { firebase,  getDataCollection} from "../firebase/firebase";
+// import Rating from "../views/Rating.vue";
+import { firebase, db } from "../firebase/firebase";
 
 Vue.use(VueRouter);
 
@@ -26,15 +27,18 @@ const routes = [
       firebase.auth().onAuthStateChanged((user) =>  {
         if (user) {
           //user logged in 
-          getDataCollection("profiles", user.uid).then(data => {
+            db.collection('profiles').doc(user.uid).onSnapshot(docSnapshot => {
+              
+              let data = docSnapshot.data();
 
-            if (data.isAdmin) {
-              next();
-            } else {
-              next('/profile');
-            }
-
-          }).catch(err => console.error(err));
+              if (data.isAdmin) {
+                next();
+              } else {
+                next('/profile');
+              }
+            }, err => {
+              console.log(`Encountered error: ${err}`);
+            });
 
         } else {
           // user not logged in
@@ -49,6 +53,7 @@ const routes = [
     component: Profile,
     meta: { requiresAuth: true }
   },
+  // {path: '/rating', name: 'rating', component: Rating},
   { path: "*", component: Home, redirect: '/' }
 ];
 

@@ -14,7 +14,7 @@
             {{ getStreamTitle }}
           </div>
         </div>
-        <vue-plyr ref="plyr">
+        <vue-plyr ref="plyr" :options="{autoplay: autoplay}">
           <audio>
             <source :src="playerStream" type="audio/mp3"/>
           </audio>
@@ -25,11 +25,11 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  import axios from 'axios';
 
   export default {
     name: 'Player',
-    props: ['playerStream', 'getStreamTitle'],
+    props: ['playerStream', 'getStreamTitle', 'autoplay'],
     data() {
       return {
         fullScreen: false
@@ -42,6 +42,9 @@
     },
     mounted () {
       document.addEventListener('keydown', (e) => {if(e.keyCode === 27) this.fullScreen =  false});
+
+      // console.log(this.player);
+      // this.$refs.plyr.player.autoplay = true
     },
     methods: {
       toggleFullScreen(status) {

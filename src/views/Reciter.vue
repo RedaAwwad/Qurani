@@ -46,7 +46,7 @@
                 <a :href="sura.link" target="_blank" :download="sura.name" class="btn_card">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 </a>
-                <span class="btn_card">
+                <span :class="sura.playlisted ? 'added' : 'not-added'" @click="addToPlaylist(sura)" class="btn_card">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                 </span>
               </div>
@@ -62,6 +62,8 @@
   import Loading from '@/components/Loading';
   import Search from '@/components/Search';
   import axios from 'axios';
+  import { mapState } from 'vuex';
+  import { db } from '../firebase/firebase';
 
   export default {
     name: 'Reciter',
@@ -76,10 +78,28 @@
     },
     components: {Loading, Search},
     computed: {
+      ...mapState(['logged', 'user']),
+      favPlaylist() {
+        return this.user.playlist;
+      },
       currId () {
         return this.$router.currentRoute.query.id;
       },
       searchedData() {
+        if(this.favPlaylist) {
+
+          let favsIds = this.favPlaylist.map(fav => fav.id);
+
+          console.log(favsIds);
+          
+          this.surasData.forEach(sura => {
+                if(favsIds.includes(this.reciter.id + '_' + sura.id)) {
+                  sura.playlisted = true;
+                } else {
+                  sura.playlisted = false;
+                }
+        });
+        }
         return this.reciter.suras_info.filter((sura) => sura.name.toLowerCase().match(this.searched));
       },
       trackUi() {
@@ -125,7 +145,7 @@
               this.loading = false;
               
             } 
-            else  this.$router.replace('/');  // Redirect to home page if current id  is undefined
+            else  this.$router.push('/');  // Redirect to home page if current id  is undefined
 
         }).catch((err) => console.log(err.message));
         
@@ -139,8 +159,43 @@
       },
       updateCurrentTrack(track) {
         this.$emit('updateStream', track);
-
+  
         this.$emit('reFirePlayer');
+      },
+      addToPlaylist(sura) {
+          if(this.logged) {
+            const updatedPlaylist = {
+              reciter: this.reciter.name,
+              rewaya: this.reciter.rewaya,
+              id: this.reciter.id + '_' + sura.id,
+              name: sura.name,
+              link: sura.link
+            }
+            let same = false;
+                if(!this.favPlaylist) {
+                    db.collection('profiles').doc(this.user.uid).update({
+                          playlist: [updatedPlaylist]
+                      }).then(_ =>  M.toast({html: 'تمت الإضافة'}))
+                      return false;
+                    }
+                
+                  this.favPlaylist.forEach(rec => {
+                    if(rec.id === this.reciter.id + '_' + sura.id) {
+                      same = true;
+                    }
+                  })
+            
+              if(!same) {
+                db.collection('profiles').doc(this.user.uid).update({
+                    playlist: [...this.favPlaylist, updatedPlaylist]
+                }).then(_ =>  M.toast({html: 'تمت الإضافة'}))
+              } else {
+                M.toast({html: 'موجود بالفعل'});
+              }
+
+          } else {
+            M.toast({html: 'يجب تسجيل الدخول أولآ'});
+          }
       }
     },
     mounted() {
