@@ -21,12 +21,12 @@
       <loading v-if="loading" />
 
       <div v-if="!loading" class="data_container">
-        <div class="center-align col" v-if="searchedData.length <= 0">
+        <div class="center-align col" v-if="reciter.suras.length <= 0">
           لا توجد نتائج
         </div>
-        <div v-for="sura in searchedData" :key="sura.id" class="col m6 card_container">
-          <div class="card horizontal" :class="sura.link == trackUi ? 'active' : ''">
-            <button type="button" class="card-image" :disabled="sura.link == trackUi ? true : false" 
+        <div v-for="sura in reciter.suras" :key="sura.id" class="col m6 card_container">
+          <div class="card horizontal" :class="sura.url == trackUi ? 'active' : ''">
+            <button type="button" class="card-image" :disabled="sura.url == trackUi ? true : false" 
             @click="updateCurrentTrack(sura)">
               <div class="playing_ui">
                 <span></span> <span></span>
@@ -64,6 +64,7 @@
   import axios from 'axios';
   import { mapState } from 'vuex';
   import { db } from '../firebase/firebase';
+  import { surasNames } from '../modules/surasNames.js';
 
   export default {
     name: 'Reciter',
@@ -83,68 +84,58 @@
         return this.user.playlist;
       },
       currId () {
-        return this.$router.currentRoute.query.id;
+        return this.$router.currentRoute.params.id;
       },
       searchedData() {
         if(this.favPlaylist) {
           let favsIds = this.favPlaylist.map(fav => fav.id);
           
-          this.surasData.forEach(sura => {
-                if(favsIds.includes(this.reciter.id + '_' + sura.id)) {
-                  sura.playlisted = true;
-                } else {
-                  sura.playlisted = false;
-                }
-        });
+          this.reciter.suras.forEach(sura => {
+              if(favsIds.includes(this.reciter.id + '_' + sura.id)) {
+                sura.playlisted = true;
+              } else {
+                sura.playlisted = false;
+              }
+          });
         }
-        return this.reciter.suras_info.filter((sura) => sura.name.toLowerCase().match(this.searched));
+        return this.reciter.suras.filter((sura) => sura.name.match(this.searched));
       },
       trackUi() {
         return this.streamLink;
       }
     },
     methods: {
-      async getCurrReciter() {
-        await axios.get('https://mp3quran.net/api/_arabic_sura.json')
-        .then((res) => this.surasData = res.data.Suras_Name)
-        .catch((err) => console.log(err.message));
+      getCurrReciter() {
 
-        axios.get('https://mp3quran.net/api/_arabic.php')
-        .then((res) => {
+         if(!isNaN(this.currId)) { //Check about query id is exist
+  
+          axios.get(`https://qurani-api.herokuapp.com/api/reciters/${this.currId}`)
+          .then((res) => {
+              const reciterSuras = res.data.suras;
+              res.data.suras = [];
+              reciterSuras.split(',').forEach((sura, i) => {
+                
+                let index = sura;
+                while (sura.length < 3) sura = "0" + sura;
 
-            if(this.currId) { //Check about query id is exist
+                res.data.suras[i] = {
+                    id: index,
+                    name: surasNames[index],
+                    url: res.data.Server+ '/' + sura + '.mp3'
+                };
 
-              let currReciter = res.data.reciters.filter(rec => rec.id === this.currId);
-              const surasNumbers = currReciter[0].suras.split(',');
-
-              currReciter[0].suras_info = [];
-
-              this.surasData.forEach(ele => {
-                for(let i = 0; i < this.surasData.length; i++) {
-                  if(ele.id == surasNumbers[i]) {
-
-                    let sNumber = ele.id;
-
-                    if(ele.id < 10) sNumber = `00${ele.id}`
-                    else if (ele.id >= 10 && ele.id < 100) sNumber = `0${ele.id}`
-
-                    let sura = {
-                      id: ele.id,
-                      name: ele.name,
-                      link: `${currReciter[0].Server}/${sNumber}.mp3`
-                    }
-                    currReciter[0].suras_info.push(sura);
-                  }}
+                  res.data.suras.push(sura);
               });
 
-              this.reciter = currReciter[0];
+              this.reciter = res.data;
+
+          }).catch((err) => console.log(err.message));
               
               this.loading = false;
               
             } 
             else  this.$router.push('/');  // Redirect to home page if current id  is undefined
-
-        }).catch((err) => console.log(err.message));
+        
         
       },
       updateSearchedData(data) {
@@ -197,6 +188,7 @@
     },
     mounted() {
       this.getCurrReciter();
+
     },
     destroyed() {
       this.loading = true;

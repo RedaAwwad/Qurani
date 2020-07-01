@@ -81,17 +81,16 @@
     },
     methods: {
       getReciters() {
-        axios.get('https://mp3quran.net/api/_arabic.php')
+        axios.get("https://qurani-api.herokuapp.com/api/reciters")
         .then((res) => {
-
-          this.reciters = res.data.reciters;
+          this.reciters = res.data;
 
           this.loading = false;
 
         }).catch((err) => console.log(err.message));
       },
       showReciter(reciter) {
-        this.$router.push('/reciter?id=' + reciter);
+        this.$router.push(`/reciter/${reciter}`);
       },
       updateSearchedData(data) {
         this.loading = true;

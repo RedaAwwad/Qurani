@@ -104,7 +104,7 @@ export default {
       document.querySelector("body").classList.toggle("openMenu");
     },
     updateStream(track) {
-      this.streamLink = track.link || track.radio_url;
+      this.streamLink = track.url || track.radio_url;
       this.streamTitle = track.name;
     },
     reFirePlayer() {
