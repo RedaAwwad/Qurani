@@ -85,6 +85,13 @@ body {
       margin-right: 20%;
     }
 
+    @media screen and (min-width: 993px) {
+      .player-wraper {
+        position: sticky;
+        top: -5px;
+      }
+    }
+
     @media screen and (max-width: 991px) {
       &.collapsed {
         margin-right: 30%;

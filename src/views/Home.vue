@@ -5,7 +5,7 @@
     <loading v-if="loading" />
 
     <div v-if="!loading" class="reciter_container">
-      <div v-if="searchedData.length <= 0">
+      <div v-if="!searchedData.length" class="no-result">
         لا توجد نتائج
       </div>
       <div v-for="reciter in searchedData" :key="reciter.id" class="col m6">
@@ -73,7 +73,12 @@
                 }
         });
         }
-        return this.reciters.filter((rec) => rec.name.toLowerCase().match(this.searched));
+
+        if(this.reciters !== undefined) {
+          return this.reciters.filter((rec) => rec.name.match(this.searched));
+        } else {
+          return [];
+        }
       },
       favouriteReciters() {
         return this.user.favouriteReciters;
@@ -84,10 +89,14 @@
         axios.get("https://qurani-api.herokuapp.com/api/reciters")
         .then((res) => {
           this.reciters = res.data;
-
           this.loading = false;
 
-        }).catch((err) => console.log(err.message));
+        }).catch((err) => {
+          console.log(err.message);
+          setTimeout(() => {
+            this.loading = false;
+          }, 2000);
+        });
       },
       showReciter(reciter) {
         this.$router.push(`/reciter/${reciter}`);
@@ -145,5 +154,8 @@
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
+      .no-result {
+        margin-top: 1rem;
+      }
     }
 </style>

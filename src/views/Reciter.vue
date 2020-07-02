@@ -2,7 +2,7 @@
   <div>
     <search v-on:updateSearchedData="updateSearchedData($event)"/>
 
-    <div class="reciter_details" v-if="!loading">
+    <div class="reciter_details">
       <div>
         {{ reciter.name }}
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-book-open"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
@@ -21,10 +21,10 @@
       <loading v-if="loading" />
 
       <div v-if="!loading" class="data_container">
-        <div class="center-align col" v-if="reciter.suras.length <= 0">
+        <div class="center-align col" v-if="!searchedData.length">
           لا توجد نتائج
         </div>
-        <div v-for="sura in reciter.suras" :key="sura.id" class="col m6 card_container">
+        <div v-for="sura in searchedData" :key="sura.id" class="col m6 card_container">
           <div class="card horizontal" :class="sura.url == trackUi ? 'active' : ''">
             <button type="button" class="card-image" :disabled="sura.url == trackUi ? true : false" 
             @click="updateCurrentTrack(sura)">
@@ -68,6 +68,7 @@
 
   export default {
     name: 'Reciter',
+    components: {Loading, Search},
     props: ['streamLink'],
     data() {
       return {
@@ -77,7 +78,6 @@
         searched: ''
       }
     },
-    components: {Loading, Search},
     computed: {
       ...mapState(['logged', 'user']),
       favPlaylist() {
@@ -90,7 +90,7 @@
         if(this.favPlaylist) {
           let favsIds = this.favPlaylist.map(fav => fav.id);
           
-          this.reciter.suras.forEach(sura => {
+          this.reciter.surasData.forEach(sura => {
               if(favsIds.includes(this.reciter.id + '_' + sura.id)) {
                 sura.playlisted = true;
               } else {
@@ -98,7 +98,12 @@
               }
           });
         }
-        return this.reciter.suras.filter((sura) => sura.name.match(this.searched));
+
+        if(this.reciter.surasData !== undefined) {
+          return this.reciter.surasData.filter((sura) => sura.name.match(this.searched));
+        } else {
+          return [];
+        }
       },
       trackUi() {
         return this.streamLink;
@@ -111,27 +116,14 @@
   
           axios.get(`https://qurani-api.herokuapp.com/api/reciters/${this.currId}`)
           .then((res) => {
-              const reciterSuras = res.data.suras;
-              res.data.suras = [];
-              reciterSuras.split(',').forEach((sura, i) => {
-                
-                let index = sura;
-                while (sura.length < 3) sura = "0" + sura;
-
-                res.data.suras[i] = {
-                    id: index,
-                    name: surasNames[index],
-                    url: res.data.Server+ '/' + sura + '.mp3'
-                };
-
-                  res.data.suras.push(sura);
-              });
-
               this.reciter = res.data;
-
-          }).catch((err) => console.log(err.message));
-              
               this.loading = false;
+
+          }).catch((err) => {
+              console.log(err.message);
+              this.loading = false;
+          });
+              
               
             } 
             else  this.$router.push('/');  // Redirect to home page if current id  is undefined

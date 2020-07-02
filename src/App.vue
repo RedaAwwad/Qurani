@@ -7,7 +7,7 @@
     <navbar v-on:toggleMenu="toggleMenu"/>
     <section class="page_wraper" :class="{ collapsed: menu }">
       <div class="row">
-        <div class="col l5">
+        <div class="col l5 player-wraper">
           <div class="player_container">
             <transition name="slide-fade" mode="out-in">
               <div class="reloading_player" v-if="!playing">
