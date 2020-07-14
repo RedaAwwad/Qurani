@@ -7,8 +7,7 @@ import Favorite from "../views/Favorite.vue";
 import Playlist from "../views/Playlist.vue";
 import Admin from "../views/Admin.vue";
 import Profile from "../views/Profile.vue";
-// import Rating from "../views/Rating.vue";
-import { firebase, db } from "../firebase/firebase";
+import { firebase, db } from "@/services/firebase/index";
 
 Vue.use(VueRouter);
 
@@ -53,7 +52,6 @@ const routes = [
     component: Profile,
     meta: { requiresAuth: true }
   },
-  // {path: '/rating', name: 'rating', component: Rating},
   { path: "*", component: Home, redirect: '/' }
 ];
 

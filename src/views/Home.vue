@@ -45,7 +45,7 @@
   import Search from '@/components/Search';
   import axios from 'axios';
   import {mapState} from 'vuex';
-  import { db as firestore, db } from '../firebase/firebase';
+  import { db as firestore, db } from '../services/firebase/index';
 
   export default {
     name: "home",
@@ -149,7 +149,7 @@
   };
 </script>
 <style lang="scss" scoped>
-    @import '../style/card';
+    @import '../assets/style/card';
     .reciter_container {
       display: flex;
       justify-content: center;

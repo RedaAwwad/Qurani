@@ -2,11 +2,11 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import { i18n } from './plugins/i18n';
+import i18n from './services/i18n/index';
 import M from 'materialize-css/dist/js/materialize';
 import 'materialize-css/dist/css/materialize.min.css';
 import VuePlyr from 'vue-plyr';
-import { firebase } from './firebase/firebase';
+import { firebase } from './services/firebase/index';
 import Swal from 'sweetalert2';
 import VueFirestore from 'vue-firestore';
 

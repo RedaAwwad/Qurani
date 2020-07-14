@@ -81,7 +81,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../style/_card.scss';
+  @import '../assets/style/card';
   .live {
     display: flex;
     justify-content: center;

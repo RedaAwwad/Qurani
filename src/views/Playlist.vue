@@ -49,7 +49,7 @@
 <script>
   import Search from '@/components/Search';
   import {mapState} from 'vuex';
-  import { db } from '../firebase/firebase';
+  import { db } from '@/services/firebase/index';
 
   export default {
     name: 'Playlist',
@@ -109,7 +109,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../style/_card.scss';
+    @import '../assets/style/card';
     .playlist_container {
       margin-top: 1rem;
     }

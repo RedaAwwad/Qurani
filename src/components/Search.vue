@@ -25,5 +25,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../style/_search.scss';
+  @import '../assets/style/search';
 </style>

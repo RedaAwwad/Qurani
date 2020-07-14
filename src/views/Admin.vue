@@ -93,7 +93,7 @@
 </template>
 
 <script>
-	import { firebase, db as firestore } from '../firebase/firebase';
+	import { firebase, db as firestore } from '@/services/firebase/index';
 	import Loading from '../components/Loading.vue';
 
     export default {
@@ -142,5 +142,5 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '../style/_admin.scss';
+	@import '../assets/style/admin';
 </style>

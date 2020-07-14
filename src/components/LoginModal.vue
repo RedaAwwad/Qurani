@@ -178,5 +178,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../style/_modal.scss';
+  @import '../assets/style/modal';
 </style>

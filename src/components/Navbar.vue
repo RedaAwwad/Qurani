@@ -32,7 +32,7 @@
 
 <script>
   import { mapState } from 'vuex';
-  import { firebase, updateDataCollection } from '../firebase/firebase';
+  import { firebase, updateDataCollection } from '../services/firebase/index';
 
   const body = document.querySelector('body');
   export default {
@@ -116,5 +116,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../style/_navbar.scss';
+  @import '../assets/style/navbar';
 </style>

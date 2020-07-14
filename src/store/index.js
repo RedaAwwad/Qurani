@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import router from "../router";
 
-import { firebase, db } from '../firebase/firebase';
+import { firebase, db } from '@/services/firebase/index';
 
 Vue.use(Vuex);
 Vue.use(router);

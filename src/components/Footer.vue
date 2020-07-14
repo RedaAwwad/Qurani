@@ -17,5 +17,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../style/_footer.scss';
+  @import '../assets/style/footer';
 </style>

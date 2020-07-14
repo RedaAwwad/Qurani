@@ -22,7 +22,7 @@
   import Search from '@/components/Search';
   import Card from '@/components/Card';
   import {mapState} from 'vuex';
-  import { db } from '../firebase/firebase';
+  import { db } from '@/services/firebase/index';
 
   export default {
     name: 'Favorite',

@@ -92,7 +92,7 @@
 </template>
 
 <script>
-  import { firebase,  registerUser, setDataCollection, updateDataCollection} from '../firebase/firebase';
+  import { firebase,  registerUser, setDataCollection, updateDataCollection} from '../services/firebase/index';
   // import { timeNow } from '../modules/timeNow';
 
   export default {
@@ -326,7 +326,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../style/_modal.scss';
+  @import '../assets/style/modal';
   .progress {
     position: absolute;
     bottom: -14px;

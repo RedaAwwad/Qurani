@@ -63,8 +63,7 @@
   import Search from '@/components/Search';
   import axios from 'axios';
   import { mapState } from 'vuex';
-  import { db } from '../firebase/firebase';
-  import { surasNames } from '../modules/surasNames.js';
+  import { db } from '@/services/firebase/index';
 
   export default {
     name: 'Reciter',
@@ -189,7 +188,7 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../style/_card.scss';
+  @import '../assets/style/card';
 
     .slide-fade-enter-active {
     transition: all .3s ease;

@@ -32,7 +32,7 @@
 		props: ['reciter'],
 			methods: {
 			showReciter(id) {
-				this.$router.push('/reciter?id=' + id);
+				this.$router.push(`/reciter/${id}`);
 			},
 			deleteReciter(reciter) {
 				this.$emit('deleteFavRec', reciter);
@@ -42,7 +42,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '../style/_card.scss';
+	@import '../assets/style/card';
 	.delete_reciter {
 		cursor: pointer;
 		color: #ee6e73;

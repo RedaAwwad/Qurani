@@ -94,7 +94,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../style/_vars.scss';
+    @import '../assets/style/vars';
     .tab_content {
         margin-top: 20px;
         padding: 15px;

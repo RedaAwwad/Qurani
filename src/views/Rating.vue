@@ -81,7 +81,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '../style/_vars.scss';
+	@import '../assets/style/vars';
 	.rating {
 		padding: 25px;
 		box-shadow: $shadow;

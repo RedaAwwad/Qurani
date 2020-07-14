@@ -200,5 +200,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../style/_preloader.scss';
+  @import '../assets/style/preloader';
 </style>

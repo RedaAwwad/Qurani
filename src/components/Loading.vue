@@ -21,5 +21,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../style/_loading.scss';
+  @import '../assets/style/loading';
 </style>

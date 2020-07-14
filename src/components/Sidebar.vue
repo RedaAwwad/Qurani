@@ -193,7 +193,7 @@ import simplebar from "simplebar-vue";
 import "simplebar/dist/simplebar.min.css";
 import defaultImg from '../assets/default-profile.png';
 import { mapState } from "vuex";
-import { firebase } from "../firebase/firebase";
+import { firebase } from "../services/firebase/index";
 
 export default {
   name: "Sidebar",
@@ -249,5 +249,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import '../style/_sidebar.scss';
+    @import '../assets/style/sidebar';
 </style>
