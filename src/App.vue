@@ -54,6 +54,7 @@
       <login-modal />
       <register-modal v-on:updateFileLoader="updateFileLoader"/>
     </div>
+    <scroll-top :menu="menu" />
   </simplebar>
 </template>
 <script>
@@ -66,6 +67,7 @@ import Sidebar from "@/components/Sidebar";
 import Player from "@/components/Player";
 import LoginModal from "@/components/LoginModal";
 import RegisterModal from "@/components/RegisterModal";
+import ScrollTop from './components/ScrollTop';
 import { mapState } from "vuex";
 
 export default {
@@ -78,6 +80,7 @@ export default {
     Player,
     LoginModal,
     RegisterModal,
+    ScrollTop
   },
   data() {
     return {
@@ -114,8 +117,16 @@ export default {
     },
     updateFileLoader(progress) {
       this.fileLoader = progress;
-    }
-  },
+    },
+    scrollTop () {
+      this.intervalId = setInterval(() => {
+        if (window.pageYOffset === 0) {
+          clearInterval(this.intervalId)
+        }
+        window.scroll(0, window.pageYOffset - 50)
+      }, 20)
+    },
+},
   mounted() {
     Materialize.AutoInit();
 

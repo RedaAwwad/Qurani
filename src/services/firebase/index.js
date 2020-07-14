@@ -47,19 +47,13 @@ async function getDataCollection(collectionName, doc) {
 }
 
 async function updateDataCollection(collectionName, doc, data) {
-  let response = {};
-  
-  await db.collection(collectionName).doc(doc).update(data)
-  .then(_ => {
+  return await db.collection(collectionName).doc(doc).update(data);
+}
 
-  response = 'تم التحديث بنجاح';
-
-}).catch(error => console.log("Error getting document:", error));
-
-  return response;
-
+async function logOut() {
+  return await firebase.auth().signOut();
 }
 
 
-export { firebase,  db, setDataCollection, getDataCollection, updateDataCollection}; 
+export { firebase,  db, setDataCollection, getDataCollection, updateDataCollection, logOut}; 
 

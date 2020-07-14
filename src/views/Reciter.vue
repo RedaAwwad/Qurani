@@ -43,7 +43,7 @@
                 </div>
               </div>
               <div class="card-action">
-                <a :href="sura.link" target="_blank" :download="sura.name" class="btn_card">
+                <a :href="sura.url" target="_blank" :download="sura.name" class="btn_card">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 </a>
                 <span :class="sura.playlisted ? 'added' : 'not-added'" @click="addToPlaylist(sura)" class="btn_card">
@@ -63,7 +63,7 @@
   import Search from '@/components/Search';
   import axios from 'axios';
   import { mapState } from 'vuex';
-  import { db } from '@/services/firebase/index';
+  import { updateDataCollection } from '@/services/firebase/index';
 
   export default {
     name: 'Reciter',
@@ -88,7 +88,6 @@
       searchedData() {
         if(this.favPlaylist) {
           let favsIds = this.favPlaylist.map(fav => fav.id);
-          
           this.reciter.surasData.forEach(sura => {
               if(favsIds.includes(this.reciter.id + '_' + sura.id)) {
                 sura.playlisted = true;
@@ -110,68 +109,57 @@
     },
     methods: {
       getCurrReciter() {
-
          if(!isNaN(this.currId)) { //Check about query id is exist
-  
-          axios.get(`https://qurani-api.herokuapp.com/api/reciters/${this.currId}`)
-          .then((res) => {
-              this.reciter = res.data;
-              this.loading = false;
-
-          }).catch((err) => {
-              console.log(err.message);
-              this.loading = false;
-          });
-              
-              
-            } 
-            else  this.$router.push('/');  // Redirect to home page if current id  is undefined
-        
-        
+              axios.get(`https://qurani-api.herokuapp.com/api/reciters/${this.currId}`)
+              .then((res) => {
+                  this.reciter = res.data;
+                  this.loading = false;
+              }).catch((err) => {
+                  console.log(err.message);
+                  this.loading = false;
+              });
+          } 
+          else  this.$router.push('/');  // Redirect to home page if current id  is undefined
       },
       updateSearchedData(data) {
         this.loading = true;
-
         this.searched = data;
-        
         setTimeout(() => {this.loading = false;}, 1000);
       },
       updateCurrentTrack(track) {
         this.$emit('updateStream', track);
-  
         this.$emit('reFirePlayer');
       },
       addToPlaylist(sura) {
           if(this.logged) {
-            const updatedPlaylist = {
+            const newSuraInPlaylist = {
               reciter: this.reciter.name,
               rewaya: this.reciter.rewaya,
               id: this.reciter.id + '_' + sura.id,
               name: sura.name,
-              link: sura.link
+              link: sura.url
             }
             let same = false;
-                if(!this.favPlaylist) {
-                    db.collection('profiles').doc(this.user.uid).update({
-                          playlist: [updatedPlaylist]
-                      }).then(_ =>  M.toast({html: 'تمت الإضافة'}))
-                      return false;
-                    }
-                
-                  this.favPlaylist.forEach(rec => {
-                    if(rec.id === this.reciter.id + '_' + sura.id) {
-                      same = true;
-                    }
-                  })
-            
-              if(!same) {
-                db.collection('profiles').doc(this.user.uid).update({
-                    playlist: [...this.favPlaylist, updatedPlaylist]
-                }).then(_ =>  M.toast({html: 'تمت الإضافة'}))
-              } else {
-                M.toast({html: 'موجود بالفعل'});
-              }
+            if(!this.favPlaylist) {
+                updateDataCollection('profiles', this.user.uid, {
+                  playlist: [newSuraInPlaylist]
+                }).then(_ =>  M.toast({html: 'تمت الإضافة'}));
+                  return false;
+                }
 
+              this.favPlaylist.forEach(rec => {
+                if(rec.id === this.reciter.id + '_' + sura.id) {
+                  same = true;
+                }
+              })
+        
+          if(!same) {
+                updateDataCollection('profiles', this.user.uid, {
+                  playlist: [...this.favPlaylist, newSuraInPlaylist]
+                }).then(_ =>  M.toast({html: 'تمت الإضافة'}));
+          } else {
+            M.toast({html: 'موجود بالفعل'});
+          }
           } else {
             M.toast({html: 'يجب تسجيل الدخول أولآ'});
           }
@@ -179,7 +167,6 @@
     },
     mounted() {
       this.getCurrReciter();
-
     },
     destroyed() {
       this.loading = true;

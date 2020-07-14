@@ -74,8 +74,9 @@
 </script>
 
 <style lang="scss" scoped>
-      .fav_container {
-        margin-top: 1rem;
-      }
+    .favorite {height: 100%;}
+    .fav_container {
+      margin-top: 1rem;
+    }
 
 </style>

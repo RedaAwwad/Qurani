@@ -192,13 +192,3 @@
 		</div>
   </div>
 </template>
-
-<script>
-  export default {
-    name: 'Preloader'
-  }
-</script>
-
-<style lang="scss" scoped>
-  @import '../assets/style/preloader';
-</style>

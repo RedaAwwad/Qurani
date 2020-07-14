@@ -45,11 +45,14 @@
   import Search from '@/components/Search';
   import axios from 'axios';
   import {mapState} from 'vuex';
-  import { db as firestore, db } from '../services/firebase/index';
+  import { updateDataCollection } from '../services/firebase/index';
 
   export default {
     name: "home",
-    components: {Loading, Search},
+    components: {
+      Loading, 
+      Search
+    },
     props: ['menu'],
     data() {
       return {
@@ -62,23 +65,13 @@
       ...mapState(['logged', 'user']),
       searchedData() {
         if(this.favouriteReciters) {
-
           let favsIds = this.favouriteReciters.map(fav => fav.id);
-
           this.reciters.forEach(rec => {
-                if(favsIds.includes(rec.id)) {
-                  rec.added = true;
-                } else {
-                  rec.added = false;
-                }
-        });
+            favsIds.includes(rec.id) ? rec.added = true : rec.added = false;
+          });
         }
 
-        if(this.reciters !== undefined) {
-          return this.reciters.filter((rec) => rec.name.match(this.searched));
-        } else {
-          return [];
-        }
+        if(this.reciters !== undefined) return this.reciters.filter((rec) => rec.name.match(this.searched)); else return [];
       },
       favouriteReciters() {
         return this.user.favouriteReciters;
@@ -87,53 +80,38 @@
     methods: {
       getReciters() {
         axios.get("https://qurani-api.herokuapp.com/api/reciters")
-        .then((res) => {
-          this.reciters = res.data;
-          this.loading = false;
-
-        }).catch((err) => {
-          console.log(err.message);
-          setTimeout(() => {
-            this.loading = false;
-          }, 2000);
-        });
+        .then(res => this.reciters = res.data)
+        .catch(err =>console.log(err.message))
+        .finally(_=>  this.loading = false);
       },
       showReciter(reciter) {
         this.$router.push(`/reciter/${reciter}`);
       },
       updateSearchedData(data) {
         this.loading = true;
-
         this.searched = data;
-        
         setTimeout(() => {this.loading = false;}, 1000);
       },
       addToFavorite(reciter) {
           if(this.logged) {
-                let same = false;
-                if(!this.favouriteReciters) {
-                    db.collection('profiles').doc(this.user.uid).update({
-                          favouriteReciters: [reciter]
-                      }).then(_ =>  M.toast({html: 'تمت الإضافة'}))
-
-                      return false;
-                    }
-                
-                  this.favouriteReciters.forEach(rec => {
-                    if(rec.id === reciter.id) {
-                      same = true;
-                    }
-                  })
+            let same = false;
+            if(!this.favouriteReciters) {
+              updateDataCollection('profiles', this.user.uid, {favouriteReciters: [reciter]})
+              .then(_ =>  M.toast({html: 'تمت الإضافة'}));
+              return false;
+            }
+        
+            this.favouriteReciters.forEach(rec => {
+              if(rec.id === reciter.id) same = true
+            })
             
-              if(!same) {
-                db.collection('profiles').doc(this.user.uid).update({
-                    favouriteReciters: [...this.favouriteReciters, reciter]
-                }).then(_ =>  M.toast({html: 'تمت الإضافة'}))
-              } else {
-                M.toast({html: 'موجود بالفعل'});
-              }
-
-            // able to add
+            if(!same) {
+              updateDataCollection('profiles', this.user.uid, {
+                  favouriteReciters: [...this.favouriteReciters, reciter]
+              }).then(_ =>  M.toast({html: 'تمت الإضافة'}))
+            } else {
+              M.toast({html: 'موجود بالفعل'});
+            }
           } else {
               M.toast({html: 'يجب تسجيل الدخول أولآ'});
           }
@@ -149,6 +127,7 @@
   };
 </script>
 <style lang="scss" scoped>
+    .home {position: relative;}
     @import '../assets/style/card';
     .reciter_container {
       display: flex;
@@ -158,4 +137,5 @@
         margin-top: 1rem;
       }
     }
+
 </style>

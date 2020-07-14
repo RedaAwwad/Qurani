@@ -16,8 +16,12 @@
           <!-- <li><a href="#!" class="blue-text">English</a></li>
           <li><a href="#!" class="blue-text">عربى</a></li>
           <li class="divider" tabindex="-1"></li> -->
-          <li @click="changeTheme('light')"><a href="javascript: ;" class="blue-text">ساطع</a></li>
-          <li @click="changeTheme('dark')"><a href="javascript: ;" class="black-text">غامق</a></li>
+          <li @click="changeTheme('light')">
+            <a href="javascript: ;" class="blue-text">ساطع</a>
+          </li>
+          <li @click="changeTheme('dark')">
+            <a href="javascript: ;" class="black-text">غامق</a>
+          </li>
           <li v-if="user.isAdmin" class="hidden_big_screen">
           <router-link  to="/admin" class="btn_admin">Admin</router-link>
         </li>
@@ -32,7 +36,7 @@
 
 <script>
   import { mapState } from 'vuex';
-  import { firebase, updateDataCollection } from '../services/firebase/index';
+  import { updateDataCollection, logOut } from '../services/firebase/index';
 
   const body = document.querySelector('body');
   export default {
@@ -43,7 +47,6 @@
     methods: {
       toggleMenu() {
         this.$emit('toggleMenu');
-        // document.querySelector('body'.classList.toggle('openMenu'))
       },
       changeTheme(theme) {
           if(theme === 'dark' && window.localStorage.theme_for_qurani !== 'dark') {
@@ -78,7 +81,6 @@
                 updateDataCollection('profiles', this.user.uid, {
                     settings: { theme: theme }
                 } ).then( res=> {
-
                 M.toast({html:   res });
                 
                   }).catch(err => console.log(err));
@@ -86,7 +88,6 @@
           }
       },
       logout() {
-
         Swal.fire({
         title: 'هل تريد تسجيل الخروج؟',
         confirmButtonText: 'نعم',
@@ -95,15 +96,10 @@
       }).then (res=> {
         
         if(res.value) {
-
-          firebase.auth().signOut().then(() => {
-
+          logOut().then(() => {
           this.$store.dispatch('getUserData');
-
-          this.$router.go({ name: "home"});
-
+          this.$router.redirect('/');
           M.toast({html: 'تم تسجيل الخروج'});
-
         }).catch((error) => console.log(error));
 
         }});

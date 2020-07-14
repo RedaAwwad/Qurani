@@ -7,6 +7,391 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
     <title>قرآنى</title>
+    <style>
+      .preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        z-index: 99999;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+      }
+
+      .preloader .socket {
+        width: 200px;
+        height: 200px;
+        position: absolute;
+        left: 50%;
+        margin-left: -100px;
+        top: 50%;
+        margin-top: -100px;
+      }
+
+      .preloader .hex-brick {
+        background: #0969cc;
+        width: 30px;
+        height: 17px;
+        position: absolute;
+        top: 5px;
+        -webkit-animation-name: fade 2s infinite;
+                animation-name: fade 2s infinite;
+      }
+
+      .preloader .h2 {
+        -webkit-transform: rotate(60deg);
+                transform: rotate(60deg);
+      }
+
+      .preloader .h3 {
+        -webkit-transform: rotate(-60deg);
+                transform: rotate(-60deg);
+      }
+
+      .preloader .gel {
+        height: 30px;
+        width: 30px;
+        -webkit-transition: all .3s;
+        transition: all .3s;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+      }
+
+      .preloader .center-gel {
+        margin-left: -15px;
+        margin-top: -15px;
+        -webkit-animation-name: pulse 2s infinite;
+                animation-name: pulse 2s infinite;
+      }
+
+      .preloader .c1 {
+        margin-left: -47px;
+        margin-top: -15px;
+      }
+
+      .preloader .c2 {
+        margin-left: -31px;
+        margin-top: -43px;
+      }
+
+      .preloader .c3 {
+        margin-left: 1px;
+        margin-top: -43px;
+      }
+
+      .preloader .c4 {
+        margin-left: 17px;
+        margin-top: -15px;
+      }
+
+      .preloader .c5 {
+        margin-left: -31px;
+        margin-top: 13px;
+      }
+
+      .preloader .c6 {
+        margin-left: 1px;
+        margin-top: 13px;
+      }
+
+      .preloader .c7 {
+        margin-left: -63px;
+        margin-top: -43px;
+      }
+
+      .preloader .c8 {
+        margin-left: 33px;
+        margin-top: -43px;
+      }
+
+      .preloader .c9 {
+        margin-left: -15px;
+        margin-top: 41px;
+      }
+
+      .preloader .c10 {
+        margin-left: -63px;
+        margin-top: 13px;
+      }
+
+      .preloader .c11 {
+        margin-left: 33px;
+        margin-top: 13px;
+      }
+
+      .preloader .c12 {
+        margin-left: -15px;
+        margin-top: -71px;
+      }
+
+      .preloader .c13 {
+        margin-left: -47px;
+        margin-top: -71px;
+      }
+
+      .preloader .c14 {
+        margin-left: 17px;
+        margin-top: -71px;
+      }
+
+      .preloader .c15 {
+        margin-left: -47px;
+        margin-top: 41px;
+      }
+
+      .preloader .c16 {
+        margin-left: 17px;
+        margin-top: 41px;
+      }
+
+      .preloader .c17 {
+        margin-left: -79px;
+        margin-top: -15px;
+      }
+
+      .preloader .c18 {
+        margin-left: 49px;
+        margin-top: -15px;
+      }
+
+      .preloader .c19 {
+        margin-left: -63px;
+        margin-top: -99px;
+      }
+
+      .preloader .c20 {
+        margin-left: 33px;
+        margin-top: -99px;
+      }
+
+      .preloader .c21 {
+        margin-left: 1px;
+        margin-top: -99px;
+      }
+
+      .preloader .c22 {
+        margin-left: -31px;
+        margin-top: -99px;
+      }
+
+      .preloader .c23 {
+        margin-left: -63px;
+        margin-top: 69px;
+      }
+
+      .preloader .c24 {
+        margin-left: 33px;
+        margin-top: 69px;
+      }
+
+      .preloader .c25 {
+        margin-left: 1px;
+        margin-top: 69px;
+      }
+
+      .preloader .c26 {
+        margin-left: -31px;
+        margin-top: 69px;
+      }
+
+      .preloader .c27 {
+        margin-left: -79px;
+        margin-top: -15px;
+      }
+
+      .preloader .c28 {
+        margin-left: -95px;
+        margin-top: -43px;
+      }
+
+      .preloader .c29 {
+        margin-left: -95px;
+        margin-top: 13px;
+      }
+
+      .preloader .c30 {
+        margin-left: 49px;
+        margin-top: 41px;
+      }
+
+      .preloader .c31 {
+        margin-left: -79px;
+        margin-top: -71px;
+      }
+
+      .preloader .c32 {
+        margin-left: -111px;
+        margin-top: -15px;
+      }
+
+      .preloader .c33 {
+        margin-left: 65px;
+        margin-top: -43px;
+      }
+
+      .preloader .c34 {
+        margin-left: 65px;
+        margin-top: 13px;
+      }
+
+      .preloader .c35 {
+        margin-left: -79px;
+        margin-top: 41px;
+      }
+
+      .preloader .c36 {
+        margin-left: 49px;
+        margin-top: -71px;
+      }
+
+      .preloader .c37 {
+        margin-left: 81px;
+        margin-top: -15px;
+      }
+
+      .preloader .r1 {
+        -webkit-animation: pulse 2s .2s infinite;
+                animation: pulse 2s .2s infinite;
+      }
+
+      .preloader .r1 > .hex-brick {
+        -webkit-animation: fade 2s .2s infinite;
+                animation: fade 2s .2s infinite;
+      }
+
+      .preloader .r2 {
+        -webkit-animation: pulse 2s .4s infinite;
+                animation: pulse 2s .4s infinite;
+      }
+
+      .preloader .r2 > .hex-brick {
+        -webkit-animation: fade 2s .4s infinite;
+                animation: fade 2s .4s infinite;
+      }
+
+      .preloader .r3 {
+        -webkit-animation: pulse 2s .6s infinite;
+                animation: pulse 2s .6s infinite;
+      }
+
+      .preloader .r3 > .hex-brick {
+        -webkit-animation-name: fade 2s .6s infinite;
+                animation-name: fade 2s .6s infinite;
+      }
+
+      @-webkit-keyframes pulse {
+        0% {
+          -webkit-transform: scale(1);
+                  transform: scale(1);
+        }
+        50% {
+          -webkit-transform: scale(0.01);
+                  transform: scale(0.01);
+        }
+        100% {
+          -webkit-transform: scale(1);
+                  transform: scale(1);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          -webkit-transform: scale(1);
+                  transform: scale(1);
+        }
+        50% {
+          -webkit-transform: scale(0.01);
+                  transform: scale(0.01);
+        }
+        100% {
+          -webkit-transform: scale(1);
+                  transform: scale(1);
+        }
+      }
+
+      @-webkit-keyframes fade {
+        0% {
+          background: #0969cc;
+        }
+        50% {
+          background: #389CA6;
+        }
+        100% {
+          background: #0969cc;
+        }
+      }
+
+      @keyframes fade {
+        0% {
+          background: #0969cc;
+        }
+        50% {
+          background: #389CA6;
+        }
+        100% {
+          background: #0969cc;
+        }
+      }
+
+      body.dark .preloader {
+        background-color: #24292e;
+      }
+
+      body.dark .preloader .hex-brick {
+        background: #2f363d;
+      }
+
+      body.dark .preloader .r1 > .hex-brick,
+      body.dark .preloader .r2 > .hex-brick,
+      body.dark .preloader .hex-brick {
+        -webkit-animation-name: fade_dark 2s 2s infinite;
+                animation-name: fade_dark 2s 2s infinite;
+      }
+
+      body.dark .preloader .r2 > .hex-brick {
+        -webkit-animation-delay: .4s;
+                animation-delay: .4s;
+      }
+
+      body.dark .preloader .r3 > .hex-brick {
+        -webkit-animation-delay: .6s;
+                animation-delay: .6s;
+      }
+
+      @-webkit-keyframes fade_dark {
+        0% {
+          background: #2f363d;
+        }
+        50% {
+          background: #90BBBF;
+        }
+        100% {
+          background: #2f363d;
+        }
+      }
+
+      @keyframes fade_dark {
+        0% {
+          background: #2f363d;
+        }
+        50% {
+          background: #90BBBF;
+        }
+        100% {
+          background: #2f363d;
+        }
+      }
+    </style>
   </head>
   <body class="rtl">
     <noscript>
