@@ -13,9 +13,6 @@ With this webapp, you can listen to *Al Quran El Kareem* with a sound of many re
   git clone https://github.com/RedaAwaad/qurani.git
 ```
 
-Server-side: {Nodejs}
-
-
 Go to the project directory
 
 ```bash
