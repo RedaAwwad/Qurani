@@ -61,7 +61,7 @@
 <script>
   import Loading from '@/components/Loading';
   import Search from '@/components/Search';
-  import axios from 'axios';
+  import { getReciter } from '@/API';
   import { mapState } from 'vuex';
   // import { updateDataCollection } from '@/services/firebase/index';
 
@@ -82,7 +82,7 @@
       favPlaylist() {
         return this.user.playlist;
       },
-      currId () {
+      reciterID () {
         return this.$router.currentRoute.params.id;
       },
       searchedData() {
@@ -108,18 +108,26 @@
       }
     },
     methods: {
-      getCurrReciter() {
-         if(!isNaN(this.currId)) { //Check about query id is exist
-              axios.get(`https://qurani-api.herokuapp.com/api/reciters/${this.currId}`)
-              .then((res) => {
-                  this.reciter = res.data;
-                  this.loading = false;
-              }).catch((err) => {
-                  console.log(err.message);
-                  this.loading = false;
-              });
-          } 
-          else  this.$router.push('/');  // Redirect to home page if current id  is undefined
+      async getCurrReciter() {
+        try {
+          const reciter = await getReciter(this.reciterID);
+          this.reciter = reciter;
+        } catch (err) {
+          console.error(err);
+        } finally {
+          this.loading = false;
+        }
+        //  if(!isNaN(this.currId)) { //Check about query id is exist
+        //       axios.get(`https://qurani-api.herokuapp.com/api/reciters/${this.currId}`)
+        //       .then((res) => {
+        //           this.reciter = res.data;
+        //           this.loading = false;
+        //       }).catch((err) => {
+        //           console.log(err.message);
+        //           this.loading = false;
+        //       });
+        //   } 
+        //   else  this.$router.push('/');  // Redirect to home page if current id  is undefined
       },
       updateSearchedData(data) {
         this.loading = true;

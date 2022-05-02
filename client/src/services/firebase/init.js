@@ -1,16 +1,16 @@
-import firebase from "firebase";
+// import firebase from "firebase";
 
-const fbConfig = {
-    apiKey: "dsbsdbsfb",
-    authDomain: "",
-    databaseURL: "",
-    projectId: "asfasfasfg",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: "asfasfasfgasg",
-    measurementId: "",
-};
+// const fbConfig = {
+//     apiKey: "dsbsdbsfb",
+//     authDomain: "",
+//     databaseURL: "",
+//     projectId: "asfasfasfg",
+//     storageBucket: "",
+//     messagingSenderId: "",
+//     appId: "asfasfasfgasg",
+//     measurementId: "",
+// };
 
-firebase.initializeApp(fbConfig);
+// firebase.initializeApp(fbConfig);
 
-export default firebase;
+// export default firebase;
