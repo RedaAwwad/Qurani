@@ -9,7 +9,7 @@
     "dev": "vue-cli-service serve --open"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "firebase": "^7.14.4",
     "jquery": "^3.5.0",
     "materialize-css": "^1.0.0",

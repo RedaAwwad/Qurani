@@ -1,4 +1,5 @@
-# Qurani Front-end
+# Qurani Back-end
+
 ### Run Locally
 
 ```bash
@@ -8,7 +9,7 @@
 Go to the project directory
 
 ```bash
-  cd qurani/client
+  cd qurani/server
 ```
 
 Install dependencies
@@ -23,4 +24,4 @@ Start the server
   npm run dev
 ```
 
-Now, the app will be runinng on port 8080 and it will open automatically through the following URL [http://localhost:8080](http://localhost:8080)
+Now, you can open the app through the following URL [http://localhost:8000](http://localhost:8000)

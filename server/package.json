@@ -1,7 +1,7 @@
 {
-  "name": "quran-api-nodejs",
+  "name": "quran-api",
   "version": "1.0.0",
-  "description": "Edit Quran api from mp3quran.com",
+  "description": "Quran api",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
