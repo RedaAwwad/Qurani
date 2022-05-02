@@ -49,7 +49,7 @@
 <script>
   import Search from '@/components/Search';
   import {mapState} from 'vuex';
-  import { db } from '@/services/firebase/index';
+  // import { db } from '@/services/firebase/index';
 
   export default {
     name: 'Playlist',

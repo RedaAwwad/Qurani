@@ -43,9 +43,9 @@
 <script>
   import Loading from '@/components/Loading';
   import Search from '@/components/Search';
-  import axios from 'axios';
+  import { getReciters } from '@/API';
   import {mapState} from 'vuex';
-  import { updateDataCollection } from '../services/firebase/index';
+  // import { updateDataCollection } from '../services/firebase/index';
 
   export default {
     name: "home",
@@ -78,11 +78,20 @@
       }
     },
     methods: {
-      getReciters() {
-        axios.get("https://qurani-api.herokuapp.com/api/reciters")
-        .then(res => this.reciters = res.data)
-        .catch(err =>console.log(err.message))
-        .finally(_=>  this.loading = false);
+      async getReciters() {
+        try {
+          const reciters = await getReciters();
+          console.log(reciters);
+          this.reciters = reciters;
+        } catch (err) {
+          console.error(err);
+        } finally {
+          this.loading = false;
+        }
+        // axios.get("https://qurani-api.herokuapp.com/api/reciters")
+        // .then(res => this.reciters = res.data)
+        // .catch(err =>console.log(err.message))
+        // .finally(_=>  this.loading = false);
       },
       showReciter(reciter) {
         this.$router.push(`/reciter/${reciter}`);
@@ -121,9 +130,6 @@
     mounted () {
       this.getReciters();
     },
-    distroyed() {
-      this.loading = true;
-    }
   };
 </script>
 <style lang="scss" scoped>

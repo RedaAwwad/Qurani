@@ -11,7 +11,7 @@ const body = document.querySelector('body');
 
 const store = new Vuex.Store({
   state: {
-    pageLoaded: false,
+    pageLoaded: true,
     logged: false,
     user:  {}
   },
@@ -27,40 +27,40 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    getUserData(context) {
+    // getUserData(context) {
 
-      firebase.auth().onAuthStateChanged((user) => {
+    //   firebase.auth().onAuthStateChanged((user) => {
         
-        if (user) {
-          //User Logged in
-          db.collection('profiles').doc(user.uid).onSnapshot(docSnapshot => {
+    //     if (user) {
+    //       //User Logged in
+    //       db.collection('profiles').doc(user.uid).onSnapshot(docSnapshot => {
               
-                let data = docSnapshot.data();
+    //             let data = docSnapshot.data();
 
-                context.commit("UPDATE_USER_DATA", data);
+    //             context.commit("UPDATE_USER_DATA", data);
             
-            setTimeout(() =>  context.dispatch("pageLoadedStatus", true), 1500);
+    //         setTimeout(() =>  context.dispatch("pageLoadedStatus", true), 1500);
                 
-                window.localStorage.theme_for_qurani = data.settings.theme;
+    //             window.localStorage.theme_for_qurani = data.settings.theme;
                 
-                context.commit("UPDATE_USER_STATUS", true);
+    //             context.commit("UPDATE_USER_STATUS", true);
                 
-                context.dispatch("triggerThemeData");
+    //             context.dispatch("triggerThemeData");
             
-            }, err => console.log(`Encountered error: ${err}`));
+    //         }, err => console.log(`Encountered error: ${err}`));
 
-        } else {
-          // User Not Logged in
-          // context.dispatch("pageLoadedStatus", true);
-          setTimeout(() =>  context.dispatch("pageLoadedStatus", true), 1500);
+    //     } else {
+    //       // User Not Logged in
+    //       // context.dispatch("pageLoadedStatus", true);
+    //       setTimeout(() =>  context.dispatch("pageLoadedStatus", true), 1500);
 
-          context.commit("UPDATE_USER_DATA", {});
+    //       context.commit("UPDATE_USER_DATA", {});
           
-          context.commit("UPDATE_USER_STATUS", false);
+    //       context.commit("UPDATE_USER_STATUS", false);
           
-        };
-      });
-    },
+    //     };
+    //   });
+    // },
     pageLoadedStatus(context, status) {
       context.commit('UPDATE_PAGE_LOADED', status);
   },

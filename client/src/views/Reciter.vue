@@ -63,7 +63,7 @@
   import Search from '@/components/Search';
   import axios from 'axios';
   import { mapState } from 'vuex';
-  import { updateDataCollection } from '@/services/firebase/index';
+  // import { updateDataCollection } from '@/services/firebase/index';
 
   export default {
     name: 'Reciter',

@@ -72,7 +72,7 @@
       }
     },
     mounted() {
-      this.getLiveRadios();
+      // this.getLiveRadios();
     },
     destroyed() {
       this.loading = true;

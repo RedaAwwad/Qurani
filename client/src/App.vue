@@ -130,7 +130,7 @@ export default {
   mounted() {
     Materialize.AutoInit();
 
-    this.$store.dispatch('getUserData');
+    // this.$store.dispatch('getUserData');
   }
 };
 </script>

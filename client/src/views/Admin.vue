@@ -93,7 +93,7 @@
 </template>
 
 <script>
-	import { firebase, db as firestore } from '@/services/firebase/index';
+	// import { firebase, db as firestore } from '@/services/firebase/index';
 	import Loading from '../components/Loading.vue';
 
     export default {
@@ -136,7 +136,7 @@
 			},
 		},
 		mounted() {
-			this.$binding("users", firestore.collection("profiles"))
+			// this.$binding("users", firestore.collection("profiles"))
 		}
     }
 </script>

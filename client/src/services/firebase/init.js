@@ -1,13 +1,13 @@
 import firebase from "firebase";
 
 const fbConfig = {
-    apiKey: "",
+    apiKey: "dsbsdbsfb",
     authDomain: "",
     databaseURL: "",
-    projectId: "",
+    projectId: "asfasfasfg",
     storageBucket: "",
     messagingSenderId: "",
-    appId: "",
+    appId: "asfasfasfgasg",
     measurementId: "",
 };
 
