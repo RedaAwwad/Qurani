@@ -3,7 +3,7 @@ Quran Web APP v1
 
 [Preview the app](https://qurani.netlify.app)
 
-**Note**
+**Note** \n
 There is a new version of the app underdeveloped [Qurani v2](https://github.com/RedaAwwad/Qurani-Web-App)
 
 ## Project setup
