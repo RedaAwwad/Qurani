@@ -1,4 +1,5 @@
-# qurani-v1
+# Qurani | v1 | Vue 2
+Quran Web APP v1
 
 ## Project setup
 ```
