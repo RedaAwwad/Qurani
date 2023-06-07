@@ -1,7 +1,7 @@
 # Qurani | v1 | Vue 2
 Quran Web APP v1
 
-[Preview the app](https://qurani-app.herokuapp.com/)
+[Preview the app](https://qurani22.vercel.app/)
 
 **Note** >> 
 There is a new version of the app underdeveloped [Qurani v2](https://github.com/RedaAwwad/Qurani-Web-App)
